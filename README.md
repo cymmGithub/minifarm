@@ -51,11 +51,8 @@ A test run follows two parallel pipelines that converge before test execution:
 ```mermaid
 graph TD
     subgraph "Pipeline 1 — Client"
-        A1[Checkout tests] --> A2[Update .envs]
-        A2 --> A3[Build client image]
-        A3 --> A4[Push to registry]
-        A4 --> A5[Update Swarm service]
-        A5 --> A6[Wait for clients]
+        A1[Build client image] --> A2[Push to registry]
+        A2 --> A3[Update Swarm service]
     end
 
     subgraph "Pipeline 2 — Master"
@@ -63,7 +60,7 @@ graph TD
         B2 --> B3[Reseed database]
     end
 
-    A6 --> PW
+    A3 --> PW
     B3 --> PW
 
     PW["Playwright Tests<br/><i>distributed across 12 nodes</i>"]
