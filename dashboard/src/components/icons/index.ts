@@ -1,0 +1,1 @@
+export { PlaywrightIcon } from './PlaywrightIcon';

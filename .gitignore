@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.env.local
+*.tar.bz2
+test_queue.json
+pipeline_runs.json
+reports/
+.DS_Store
+bun.lock

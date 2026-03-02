@@ -1,0 +1,109 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+const app = require("../app");
+const http = require("http");
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+const port = normalizePort(process.env.PORT || "3000");
+app.set("port", port);
+
+/**
+ * Create HTTP server.
+ */
+
+const server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on("error", onError);
+server.on("listening", onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+	const port = parseInt(val, 10);
+
+	if (isNaN(port)) {
+		// named pipe
+		return val;
+	}
+
+	if (port >= 0) {
+		// port number
+		return port;
+	}
+
+	return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+	if (error.syscall !== "listen") {
+		console.error("Server error:", error);
+		throw error;
+	}
+
+	const bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+
+	// handle specific listen errors with friendly messages
+	switch (error.code) {
+		case "EACCES":
+			console.error(bind + " requires elevated privileges");
+			process.exit(1);
+			break;
+		case "EADDRINUSE":
+			console.error(bind + " is already in use");
+			process.exit(1);
+			break;
+		default:
+			console.error("Server error on " + bind + ":", error);
+			throw error;
+	}
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+	const addr = server.address();
+	const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+	console.log("Server is listening on " + bind);
+	console.log("Environment:", process.env.NODE_ENV || "development");
+}
+
+function gracefulShutdown(signal) {
+	console.log(`\nReceived ${signal}, starting graceful shutdown...`);
+
+	server.close(() => {
+		console.log("HTTP server closed");
+		console.log("Graceful shutdown completed");
+		process.exit(0);
+	});
+
+	// Force close after 10 seconds
+	setTimeout(() => {
+		console.error(
+			"Could not close connections in time, forcefully shutting down"
+		);
+		process.exit(1);
+	}, 10000);
+}
+
+process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
+process.on("SIGINT", () => gracefulShutdown("SIGINT"));

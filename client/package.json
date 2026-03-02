@@ -1,0 +1,17 @@
+{
+  "name": "playwright-testing-client",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "address": "^1.2.1",
+    "debug": "~2.6.9",
+    "dotenv": "^16.0.3",
+    "express": "~4.16.1",
+    "got": "^11.8.5",
+    "morgan": "~1.9.1",
+    "nanoid": "^3.3.4"
+  }
+}

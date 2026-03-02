@@ -1,0 +1,29 @@
+{
+  "name": "minifarm-cli",
+  "version": "1.0.0",
+  "description": "Minifarm CLI - Unified command for deployment and testing",
+  "type": "module",
+  "main": "minifarm.js",
+  "bin": {
+    "minifarm": "./minifarm.js"
+  },
+  "scripts": {
+    "start": "node minifarm.js"
+  },
+  "keywords": [
+    "minifarm",
+    "playwright",
+    "testing",
+    "deployment"
+  ],
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "got": "^11.8.5",
+    "hwp": "^0.4.1",
+    "lodash": "^4.17.21",
+    "md5-file": "^5.0.0",
+    "yargs": "^17.7.2"
+  }
+}

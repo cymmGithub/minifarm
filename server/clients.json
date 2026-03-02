@@ -1,0 +1,74 @@
+[
+	{
+		"id": "minifarm-client-1",
+		"workers": 2,
+		"mac": "AA:BB:CC:DD:EE:01",
+		"url": "http://minifarm-client-1.local:3802"
+	},
+	{
+		"id": "minifarm-client-2",
+		"workers": 2,
+		"mac": "AA:BB:CC:DD:EE:02",
+		"url": "http://minifarm-client-2.local:3802"
+	},
+	{
+		"id": "minifarm-client-3",
+		"workers": 2,
+		"mac": "AA:BB:CC:DD:EE:03",
+		"url": "http://minifarm-client-3.local:3802"
+	},
+	{
+		"id": "minifarm-client-4",
+		"workers": 2,
+		"mac": "AA:BB:CC:DD:EE:04",
+		"url": "http://minifarm-client-4.local:3802"
+	},
+	{
+		"id": "minifarm-client-5",
+		"workers": 2,
+		"mac": "AA:BB:CC:DD:EE:05",
+		"url": "http://minifarm-client-5.local:3802"
+	},
+	{
+		"id": "minifarm-client-6",
+		"workers": 2,
+		"mac": "AA:BB:CC:DD:EE:06",
+		"url": "http://minifarm-client-6.local:3802"
+	},
+	{
+		"id": "minifarm-client-7",
+		"workers": 2,
+		"mac": "AA:BB:CC:DD:EE:07",
+		"url": "http://minifarm-client-7.local:3802"
+	},
+	{
+		"id": "minifarm-client-8",
+		"workers": 2,
+		"mac": "AA:BB:CC:DD:EE:08",
+		"url": "http://minifarm-client-8.local:3802"
+	},
+	{
+		"id": "minifarm-client-9",
+		"workers": 2,
+		"mac": "AA:BB:CC:DD:EE:09",
+		"url": "http://minifarm-client-9.local:3802"
+	},
+	{
+		"id": "minifarm-client-11",
+		"workers": 2,
+		"mac": "AA:BB:CC:DD:EE:11",
+		"url": "http://minifarm-client-11.local:3802"
+	},
+	{
+		"id": "minifarm-client-12",
+		"workers": 2,
+		"mac": "AA:BB:CC:DD:EE:12",
+		"url": "http://minifarm-client-12.local:3802"
+	},
+	{
+		"id": "minifarm-client-13",
+		"workers": 2,
+		"mac": "AA:BB:CC:DD:EE:13",
+		"url": "http://minifarm-client-13.local:3802"
+	}
+]
