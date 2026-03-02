@@ -158,7 +158,7 @@ function ArchitectureDiagram() {
                      │
    ┌──┬──┬──┬──┬──┬──┼──┬──┬──┬──┬──┐
    │  │  │  │  │  │  │  │  │  │  │  │
-   01 02 03 04 05 06 07 08 09 11 12 13
+   01 02 03 04 05 06 07 08 09 10 11 12
 
       < 12x Dell WYSE 5070 thin clients >`}
 				</pre>
@@ -355,9 +355,8 @@ export function AboutSection() {
 
 				<RevealSection className="mt-8">
 					<p className="text-xs text-amber-500/40 leading-relaxed font-mono">
-						{'// '}Client 10 is missing due to a hardware fault. Each remaining
-						client runs 2 parallel Playwright instances, giving the cluster
-						a total capacity of 24 simultaneous test executions.
+						{'// '}Each client runs 2 parallel Playwright instances, giving
+						the cluster a total capacity of 24 simultaneous test executions.
 					</p>
 				</RevealSection>
 

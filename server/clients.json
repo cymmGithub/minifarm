@@ -54,6 +54,12 @@
 		"url": "http://minifarm-client-9.local:3802"
 	},
 	{
+		"id": "minifarm-client-10",
+		"workers": 2,
+		"mac": "AA:BB:CC:DD:EE:10",
+		"url": "http://minifarm-client-10.local:3802"
+	},
+	{
 		"id": "minifarm-client-11",
 		"workers": 2,
 		"mac": "AA:BB:CC:DD:EE:11",
@@ -64,11 +70,5 @@
 		"workers": 2,
 		"mac": "AA:BB:CC:DD:EE:12",
 		"url": "http://minifarm-client-12.local:3802"
-	},
-	{
-		"id": "minifarm-client-13",
-		"workers": 2,
-		"mac": "AA:BB:CC:DD:EE:13",
-		"url": "http://minifarm-client-13.local:3802"
 	}
 ]
