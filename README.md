@@ -129,3 +129,7 @@ The dashboard provides real-time visibility into the test pipeline with live pro
 ## License
 
 MIT
+
+---
+
+> **Note:** This project is tightly coupled to the internal application stack it was built to test. It is published here for reference, not as a reusable tool.
