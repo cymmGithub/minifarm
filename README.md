@@ -6,6 +6,10 @@
   <img src="dashboard/public/about/hero.jpg" alt="The Minifarm — 12 Dell WYSE thin clients mounted in a handmade wooden rack" width="700" />
 </p>
 
+<p align="center">
+  <sub>Wooden rack designed and built by <a href="https://github.com/soquel">@soquel</a></sub>
+</p>
+
 ## What is this?
 
 The Minifarm is a custom-built distributed test execution system that parallelizes Playwright end-to-end tests across a physical cluster of repurposed thin clients. No Selenium Grid, no BrowserStack — just bare metal, Docker Swarm, and a Node.js orchestration layer written from scratch.
