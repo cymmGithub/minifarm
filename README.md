@@ -20,77 +20,57 @@ The system includes a real-time dashboard, a CLI for triggering full pipeline ru
 
 ## Architecture
 
-```
-  ┌──────────────────────────────────────┐
-  │  MASTER NODE                         │
-  │    Ubuntu 24 Laptop                  │
-  │    minifarm-master.local             │
-  │                                      │
-  │    ├─ Docker Swarm Manager           │
-  │    ├─ Private Registry :5000         │
-  │    ├─ Test Orchestrator :3801        │
-  │    ├─ Dashboard (React)              │
-  │    └─ App Stack (Docker Compose)     │
-  └──────────────────┬───────────────────┘
-                     │
-              ┌──────┴──────┐
-              │  ethernet   │
-              └──────┬──────┘
-                     │
-          ┌──────────┴──────────┐
-          │   network switch    │
-          └──────────┬──────────┘
-                     │
-   ┌──┬──┬──┬──┬──┬──┼──┬──┬──┬──┬──┐
-   │  │  │  │  │  │  │  │  │  │  │  │
-   01 02 03 04 05 06 07 08 09 11 12 13
+```mermaid
+graph TD
+    Master["<b>MASTER NODE</b><br/>Ubuntu 24 Laptop<br/>minifarm-master.local<br/><br/>Docker Swarm Manager<br/>Private Registry :5000<br/>Test Orchestrator :3801<br/>Dashboard · App Stack"]
+    Switch[Network Switch]
+    Master --- Switch
+    Switch --- C01[Client 01] & C02[Client 02] & C03[Client 03] & C04[Client 04] & C05[Client 05] & C06[Client 06]
+    Switch --- C07[Client 07] & C08[Client 08] & C09[Client 09] & C11[Client 11] & C12[Client 12] & C13[Client 13]
 
-      < 12x Dell WYSE 5070 thin clients >
-      Alpine Linux | Docker | Playwright
-      2 parallel workers each = 24 slots
+    style Master fill:#1a1a2e,stroke:#e2b714,color:#e2b714
+    style Switch fill:#16213e,stroke:#999,color:#ccc
+    style C01 fill:#0f3460,stroke:#999,color:#ccc
+    style C02 fill:#0f3460,stroke:#999,color:#ccc
+    style C03 fill:#0f3460,stroke:#999,color:#ccc
+    style C04 fill:#0f3460,stroke:#999,color:#ccc
+    style C05 fill:#0f3460,stroke:#999,color:#ccc
+    style C06 fill:#0f3460,stroke:#999,color:#ccc
+    style C07 fill:#0f3460,stroke:#999,color:#ccc
+    style C08 fill:#0f3460,stroke:#999,color:#ccc
+    style C09 fill:#0f3460,stroke:#999,color:#ccc
+    style C11 fill:#0f3460,stroke:#999,color:#ccc
+    style C12 fill:#0f3460,stroke:#999,color:#ccc
+    style C13 fill:#0f3460,stroke:#999,color:#ccc
 ```
+
+<sub>12x Dell WYSE 5070 thin clients · Alpine Linux · Docker · Playwright · 2 workers each = 24 parallel slots</sub>
 
 A test run follows two parallel pipelines that converge before test execution:
 
-```
-  PIPELINE 1 — CLIENT          PIPELINE 2 — MASTER
-  ═══════════════════          ═══════════════════
+```mermaid
+graph TD
+    subgraph "Pipeline 1 — Client"
+        A1[Checkout tests] --> A2[Update .envs]
+        A2 --> A3[Build client image]
+        A3 --> A4[Push to registry]
+        A4 --> A5[Update Swarm service]
+        A5 --> A6[Wait for clients]
+    end
 
-  ┌─────────────────────┐      ┌─────────────────────┐
-  │ Checkout tests      │      │ Deploy master apps   │
-  └─────────┬───────────┘      └─────────┬───────────┘
-            ▼                            ▼
-  ┌─────────────────────┐      ┌─────────────────────┐
-  │ Update .envs        │      │ Run backend tests    │
-  └─────────┬───────────┘      └─────────┬───────────┘
-            ▼                            ▼
-  ┌─────────────────────┐      ┌─────────────────────┐
-  │ Build client image  │      │ Reseed database      │
-  └─────────┬───────────┘      └─────────┬───────────┘
-            ▼                            │
-  ┌─────────────────────┐                │
-  │ Push to registry    │                │
-  └─────────┬───────────┘                │
-            ▼                            │
-  ┌─────────────────────┐                │
-  │ Update Swarm service│                │
-  └─────────┬───────────┘                │
-            ▼                            │
-  ┌─────────────────────┐                │
-  │ Wait for clients    │                │
-  └─────────┬───────────┘                │
-            │                            │
-            └──────────┬─────────────────┘
-                       ▼
-            ╔═══════════════════════╗
-            ║  PLAYWRIGHT TESTS     ║
-            ║  distributed across   ║
-            ║  12 client nodes      ║
-            ╚═══════════╤═══════════╝
-                        ▼
-               ┌────────────────┐
-               │  Merged Report │
-               └────────────────┘
+    subgraph "Pipeline 2 — Master"
+        B1[Deploy master apps] --> B2[Run backend tests]
+        B2 --> B3[Reseed database]
+    end
+
+    A6 --> PW
+    B3 --> PW
+
+    PW["Playwright Tests<br/><i>distributed across 12 nodes</i>"]
+    PW --> Report[Merged Report]
+
+    style PW fill:#1a1a2e,stroke:#e2b714,color:#e2b714
+    style Report fill:#16213e,stroke:#e2b714,color:#e2b714
 ```
 
 ## Tech Stack
