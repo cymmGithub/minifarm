@@ -16,7 +16,7 @@ The Minifarm is a custom-built distributed test execution system that paralleliz
 
 An Ubuntu laptop serves as the master node, running a private Docker registry, the full application stack under test, and a test orchestration server. Twelve Dell WYSE 5070 thin clients — sourced as retired corporate hardware — act as worker nodes, each running Alpine Linux with Chromium and Playwright inside containers deployed via Docker Swarm.
 
-The system includes a real-time dashboard with a CRT-aesthetic About page, a CLI for triggering full pipeline runs, and an SSE-based streaming architecture that bridges CLI output to the browser in real time.
+The system includes a real-time dashboard, a CLI for triggering full pipeline runs, and an SSE-based streaming architecture that bridges CLI output to the browser in real time.
 
 ## Architecture
 
@@ -131,60 +131,7 @@ The dashboard provides real-time visibility into the test pipeline with live pro
 - **Pipeline progress** — Stage-by-stage view with live log streaming
 - **Test queue** — Current and historical test batches with pass/fail counts
 - **Test configuration** — Grep filter patterns and project selection
-- **About page** — A CRT-aesthetic page with hardware photos, architecture diagrams, and specifications (built with Tailwind CSS and custom amber-glow effects)
 
-## Project Structure
-
-```
-minifarm/
-├── cli/                        # CLI orchestration tool
-│   ├── minifarm.js             # Main entry point (yargs CLI)
-│   ├── lib/
-│   │   ├── config.js           # Network, paths, concurrency settings
-│   │   ├── docker.js           # Swarm service management
-│   │   ├── git.js              # Parallel repo checkout with hwp
-│   │   ├── apps.js             # Master app deployment, env management
-│   │   ├── testing.js          # Test triggering and polling
-│   │   ├── shell.js            # Shell execution utilities
-│   │   ├── logger.js           # Formatted console output
-│   │   └── stage-logger.js     # [stage] prefixed logging for SSE bridge
-│   ├── compose.swarm.yml       # Docker Swarm stack definition
-│   ├── playwright-testing-client.Dockerfile
-│   ├── setup-client.sh         # Client node provisioning script
-│   └── daemon.json             # Docker daemon config for insecure registry
-│
-├── server/                     # Test orchestration server
-│   ├── app.js                  # Express app setup
-│   ├── routes.js               # Test queue, execution, report merging
-│   ├── pipeline.js             # Pipeline state machine
-│   ├── pipeline-executor.js    # Spawns CLI, parses stdout, emits SSE
-│   ├── pipeline-routes.js      # Pipeline API + SSE stream endpoint
-│   ├── lib.js                  # Test file discovery
-│   ├── clients.json            # Static client registry
-│   └── bin/www                 # Server entry point
-│
-├── client/                     # Worker node Express server
-│   ├── app.js                  # Express app setup
-│   ├── routes.js               # /run-test, /ping, /purge-leftovers
-│   └── bin/www                 # Client entry point
-│
-├── dashboard/                  # React dashboard (Vite + TypeScript)
-│   ├── src/
-│   │   ├── App.tsx
-│   │   ├── components/
-│   │   │   ├── AboutSection.tsx       # CRT-aesthetic hardware showcase
-│   │   │   ├── PipelineProgress.tsx   # Live pipeline stage tracking
-│   │   │   ├── PipelineForm.tsx       # Pipeline trigger form
-│   │   │   ├── QueueSection.tsx       # Test batch history
-│   │   │   └── TestConfigSection.tsx  # Test filter configuration
-│   │   └── hooks/
-│   │       ├── useEventSource.ts      # SSE connection hook
-│   │       └── usePipelineEvents.ts   # Pipeline event processing
-│   └── public/about/                  # Hardware photography
-│
-└── docs/
-    └── architecture.md                # Detailed technical deep-dive
-```
 
 ## Components
 
@@ -194,7 +141,7 @@ minifarm/
 
 **Client** (`client/`) — A lightweight Express server running inside each Docker container on the worker nodes. Receives test execution requests, runs Playwright against the application stack on the master, and returns compressed blob reports.
 
-**Dashboard** (`dashboard/`) — A React SPA providing real-time pipeline monitoring. Connects to the server via SSE for live updates. Includes a CRT-themed About page showcasing the physical hardware build.
+**Dashboard** (`dashboard/`) — A React SPA providing real-time pipeline monitoring. Connects to the server via SSE for live updates.
 
 ## License
 
