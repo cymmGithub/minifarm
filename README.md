@@ -89,7 +89,7 @@ graph TD
 | Discovery | mDNS (.local hostnames) |
 | Compression | pbzip2 (parallel bzip2 for report transfer) |
 
-## Key Engineering Decisions
+## Key Decisions
 
 - **Two parallel deployment pipelines** — Client container builds and master app deployments run concurrently using `Promise.allSettled`, with Playwright tests gated on both completing. The `hwp` library provides bounded-concurrency async iteration for git checkouts and env file updates.
 
