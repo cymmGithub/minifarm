@@ -18,33 +18,37 @@ An Ubuntu laptop serves as the master node, running a private Docker registry, t
 
 The system includes a real-time dashboard, a CLI for triggering full pipeline runs, and an SSE-based streaming architecture that bridges CLI output to the browser in real time.
 
-## Architecture
+## Bird's eye view
 
-```mermaid
-graph TD
-    Master["<b>MASTER NODE</b><br/>Ubuntu 24 Laptop<br/>minifarm-master.local<br/><br/>Docker Swarm Manager<br/>Private Registry :5000<br/>Test Orchestrator :3801<br/>Dashboard · App Stack"]
-    Switch[Network Switch]
-    Master --- Switch
-    Switch --- C01[Client 01] & C02[Client 02] & C03[Client 03] & C04[Client 04] & C05[Client 05] & C06[Client 06]
-    Switch --- C07[Client 07] & C08[Client 08] & C09[Client 09] & C10[Client 10] & C11[Client 11] & C12[Client 12]
-
-    style Master fill:#1a1a2e,stroke:#e2b714,color:#e2b714
-    style Switch fill:#16213e,stroke:#999,color:#ccc
-    style C01 fill:#0f3460,stroke:#999,color:#ccc
-    style C02 fill:#0f3460,stroke:#999,color:#ccc
-    style C03 fill:#0f3460,stroke:#999,color:#ccc
-    style C04 fill:#0f3460,stroke:#999,color:#ccc
-    style C05 fill:#0f3460,stroke:#999,color:#ccc
-    style C06 fill:#0f3460,stroke:#999,color:#ccc
-    style C07 fill:#0f3460,stroke:#999,color:#ccc
-    style C08 fill:#0f3460,stroke:#999,color:#ccc
-    style C09 fill:#0f3460,stroke:#999,color:#ccc
-    style C10 fill:#0f3460,stroke:#999,color:#ccc
-    style C11 fill:#0f3460,stroke:#999,color:#ccc
-    style C12 fill:#0f3460,stroke:#999,color:#ccc
 ```
+  ┌──────────────────────────────────────┐
+  │  MASTER NODE                         │
+  │    Ubuntu 24 Laptop                  │
+  │    minifarm-master.local             │
+  │                                      │
+  │    ├─ Docker Swarm Manager           │
+  │    ├─ Private Registry :5000         │
+  │    ├─ Test Orchestrator :3801        │
+  │    ├─ Dashboard (React)              │
+  │    └─ App Stack (Docker Compose)     │
+  └──────────────────┬───────────────────┘
+                     │
+              ┌──────┴──────┐
+              │  ethernet   │
+              └──────┬──────┘
+                     │
+          ┌──────────┴──────────┐
+          │   network switch    │
+          └──────────┬──────────┘
+                     │
+   ┌──┬──┬──┬──┬──┬──┼──┬──┬──┬──┬──┐
+   │  │  │  │  │  │  │  │  │  │  │  │
+   01 02 03 04 05 06 07 08 09 10 11 12
 
-<sub>12x Dell WYSE 5070 thin clients · Alpine Linux · Docker · Playwright · 2 workers each = 24 parallel slots</sub>
+      < 12x Dell WYSE 5070 thin clients >
+      Alpine Linux | Docker | Playwright
+      2 parallel workers each = 24 slots
+```
 
 A test run follows two parallel pipelines that converge before test execution:
 
