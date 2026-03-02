@@ -12,11 +12,13 @@
 
 ## What is this?
 
-The Minifarm is a custom-built distributed test execution system that parallelizes Playwright end-to-end tests across a physical cluster of repurposed thin clients. No Selenium Grid, no BrowserStack — just bare metal, Docker Swarm, and a Node.js orchestration layer written from scratch.
-
 An Ubuntu laptop serves as the master node, running a private Docker registry, the full application stack under test, and a test orchestration server. Twelve Dell WYSE 5070 thin clients — sourced as retired corporate hardware — act as worker nodes, each running Alpine Linux with Chromium and Playwright inside containers deployed via Docker Swarm.
 
 The system includes a real-time dashboard, a CLI for triggering full pipeline runs, and an SSE-based streaming architecture that bridges CLI output to the browser in real time.
+
+## What problem does it solve?
+
+Before this project, our small team had no CI/CD pipeline. Every end-to-end test from a growing monolith had to be run manually on a developer's local machine — one test at a time, blocking their workstation for the duration. The Minifarm replaced that with a single button click in the dashboard: select a branch, hit start, and the entire test suite runs in parallel across 12 dedicated machines while you keep working.
 
 ## Bird's eye view
 
