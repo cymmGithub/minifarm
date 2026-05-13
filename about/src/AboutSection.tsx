@@ -1,6 +1,41 @@
 import { useState, useCallback } from 'react';
 import { useScrollReveal } from './hooks/useScrollReveal';
 
+type ResponsivePictureProps = {
+	base: string;
+	alt: string;
+	sizes: string;
+	className?: string;
+	loading?: 'eager' | 'lazy';
+	fetchPriority?: 'high' | 'auto';
+};
+
+function ResponsivePicture({
+	base,
+	alt,
+	sizes,
+	className = '',
+	loading = 'lazy',
+	fetchPriority = 'auto',
+}: ResponsivePictureProps) {
+	const webp = [640, 1280, 1920].map((w) => `/about/${base}-${w}.webp ${w}w`).join(', ');
+	const jpg = [640, 1280, 1920].map((w) => `/about/${base}-${w}.jpg ${w}w`).join(', ');
+	return (
+		<picture>
+			<source type="image/webp" srcSet={webp} sizes={sizes} />
+			<img
+				src={`/about/${base}-1280.jpg`}
+				srcSet={jpg}
+				sizes={sizes}
+				alt={alt}
+				loading={loading}
+				fetchPriority={fetchPriority}
+				className={className}
+			/>
+		</picture>
+	);
+}
+
 function RevealSection({
 	children,
 	className = '',
@@ -56,30 +91,34 @@ function Lightbox({
 /* ─── Clickable photo ─── */
 
 function Photo({
-	src,
+	base,
 	alt,
 	caption,
 	className = '',
 	imgClassName = '',
+	sizes = '(min-width: 768px) 50vw, 100vw',
 	onOpen,
 }: {
-	src: string;
+	base: string;
 	alt: string;
 	caption?: string;
 	className?: string;
 	imgClassName?: string;
+	sizes?: string;
 	onOpen: (src: string, alt: string) => void;
 }) {
+	const fullSrc = `/about/${base}-1920.jpg`;
 	return (
 		<figure className={className}>
 			<button
 				type="button"
-				onClick={() => onOpen(src, alt)}
+				onClick={() => onOpen(fullSrc, alt)}
 				className="amber-photo-overlay block w-full cursor-zoom-in focus:outline-none focus-visible:ring-1 focus-visible:ring-amber-500/50 rounded group"
 			>
-				<img
-					src={src}
+				<ResponsivePicture
+					base={base}
 					alt={alt}
+					sizes={sizes}
 					className={`rounded border border-amber-500/20 grayscale-[30%] sepia-[20%] brightness-90 group-hover:brightness-100 group-hover:border-amber-500/40 transition-all duration-300 ${imgClassName}`}
 				/>
 			</button>
@@ -264,9 +303,12 @@ export function AboutSection() {
 
 			{/* ─── Hero ─── */}
 			<div className="relative w-full h-[60vh] min-h-[400px] max-h-[600px] overflow-hidden">
-				<img
-					src="/about/hero.jpg"
+				<ResponsivePicture
+					base="hero"
 					alt="The Minifarm — 12 Dell WYSE thin clients mounted in a handmade wooden rack"
+					sizes="100vw"
+					loading="eager"
+					fetchPriority="high"
 					className="absolute inset-0 w-full h-full object-cover object-center grayscale-[40%] sepia-[30%] brightness-[0.6]"
 				/>
 				{/* Dark gradient overlay */}
@@ -328,7 +370,7 @@ export function AboutSection() {
 
 				<RevealSection>
 					<Photo
-						src="/about/closeup.jpg"
+						base="closeup"
 						alt="Underside of the rack showing wooden slat separators and custom DC power wiring with Wago connectors"
 						caption="The underside of the rack — wooden slat separators hold each thin client in place, while custom-soldered DC barrel connectors distribute 19V power from salvaged laptop chargers."
 						className="mb-10"
@@ -475,7 +517,7 @@ export function AboutSection() {
 				<div className="grid grid-cols-2 gap-4">
 					<RevealSection>
 						<Photo
-							src="/about/side.jpg"
+							base="side"
 							alt="Side view of the rack showing USB and DisplayPort connectors, ethernet cables, and LED indicators"
 							caption="Side profile — ethernet and power cables routed through the wooden frame"
 							imgClassName="w-full aspect-[4/3] object-cover"
@@ -484,7 +526,7 @@ export function AboutSection() {
 					</RevealSection>
 					<RevealSection delay={100}>
 						<Photo
-							src="/about/wiring.jpg"
+							base="wiring"
 							alt="Inside view of the rack showing custom DC power wiring with barrel connectors"
 							caption="Inner wiring detail with DC barrel connectors"
 							imgClassName="w-full aspect-[4/3] object-cover"
@@ -493,7 +535,7 @@ export function AboutSection() {
 					</RevealSection>
 					<RevealSection delay={50}>
 						<Photo
-							src="/about/bottom.jpg"
+							base="bottom"
 							alt="Bottom view of the rack showing power distribution and adapters mounted to perforated metal base"
 							caption="Underside — power adapters and strip mounted to the perforated base"
 							imgClassName="w-full aspect-[4/3] object-cover"
@@ -502,7 +544,7 @@ export function AboutSection() {
 					</RevealSection>
 					<RevealSection delay={150}>
 						<Photo
-							src="/about/hero.jpg"
+							base="hero"
 							alt="Front three-quarter view of the complete minifarm"
 							caption="The complete farm with all 12 clients and the network switch visible below"
 							imgClassName="w-full aspect-[4/3] object-cover"
