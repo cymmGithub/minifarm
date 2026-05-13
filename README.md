@@ -3,6 +3,10 @@
 **A distributed testing infrastructure built from 12 Dell WYSE thin clients, Docker Swarm, and a handmade wooden rack.**
 
 <p align="center">
+  <a href="https://minifarm-nine.vercel.app/"><strong>→ LIVE ABOUT</strong></a>
+</p>
+
+<p align="center">
   <img src="dashboard/public/about/hero.jpg" alt="The Minifarm — 12 Dell WYSE thin clients mounted in a handmade wooden rack" width="700" />
 </p>
 
